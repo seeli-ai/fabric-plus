@@ -1,1 +1,11 @@
 python-dotenv
+streamlit
+langchain
+langchain-openai
+langchain-anthropic
+langsmith
+pydantic
+requests
+google-api-python-client
+youtube-transcript-api
+SQLAlchemy 
