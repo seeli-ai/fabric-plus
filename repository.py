@@ -1,4 +1,4 @@
-from models import Base, User, Prompts, Parameter, Model, Provider
+from models import Base, User, Prompt, Parameter, Model, Provider
 from sqlalchemy.orm import Session
 from typing import List
 from connect_db import engine
@@ -56,22 +56,22 @@ def delete_user(user_id: int) -> User:
 # Read
 
 
-def get_prompt_by_id(prompt_id: int) -> Prompts:
-    return session.query(Prompts).filter(Prompts.id == prompt_id).first()
+def get_prompt_by_id(prompt_id: int) -> Prompt:
+    return session.query(Prompt).filter(Prompt.id == prompt_id).first()
 
 
-def get_all_prompts() -> List[Prompts]:
-    return session.query(Prompts).all()
+def get_all_prompts() -> List[Prompt]:
+    return session.query(Prompt).all()
 
 
-def get_prompt_by_title(title: str) -> Prompts:
-    return session.query(Prompts).filter(Prompts.title == title).first()
+def get_prompt_by_title(title: str) -> Prompt:
+    return session.query(Prompt).filter(Prompt.title == title).first()
 
 # Create
 
 
-def create_prompt(title: str, system_prompt: str, user_prompt: str = None, description: str = None) -> Prompts:
-    new_prompt = Prompts(title=title, system_prompt=system_prompt,
+def create_prompt(title: str, system_prompt: str, user_prompt: str = None, description: str = None) -> Prompt:
+    new_prompt = Prompt(title=title, system_prompt=system_prompt,
                          user_prompt=user_prompt, description=description)
     session.add(new_prompt)
     session.commit()
@@ -80,7 +80,7 @@ def create_prompt(title: str, system_prompt: str, user_prompt: str = None, descr
 # Update
 
 
-def update_prompt(prompt_id: int, **kwargs) -> Prompts:
+def update_prompt(prompt_id: int, **kwargs) -> Prompt:
     prompt = get_prompt_by_id(prompt_id)
     for key, value in kwargs.items():
         setattr(prompt, key, value)
@@ -90,7 +90,7 @@ def update_prompt(prompt_id: int, **kwargs) -> Prompts:
 # Delete
 
 
-def delete_prompt(prompt_id: int) -> Prompts:
+def delete_prompt(prompt_id: int) -> Prompt:
     prompt = get_prompt_by_id(prompt_id)
     session.delete(prompt)
     session.commit()

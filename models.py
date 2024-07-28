@@ -56,13 +56,14 @@ class Model(Base):
     __tablename__ = 'models'
 
     id: Mapped[int] = mapped_column('id', primary_key=True, autoincrement=True)
+    short_name: Mapped[str]
     name: Mapped[str]
     provider_id: Mapped[int] = mapped_column(ForeignKey('providers.id'))
     provider: Mapped['Provider'] = relationship(
         'Provider', back_populates='models')
 
     def __repr__(self):
-        return f'<Model(name={self.name}, created_at={self.created_at})>'
+        return f'{self.short_name} ####'
 
 
 class Provider(Base):
@@ -74,4 +75,4 @@ class Provider(Base):
         'Model', back_populates='provider', foreign_keys='Model.provider_id')
 
     def __repr__(self):
-        return f'<Provider(name={self.name}, created_at={self.created_at})>'
+        return f'<Provider(name={self.name})>'

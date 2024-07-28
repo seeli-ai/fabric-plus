@@ -1,18 +1,20 @@
 import streamlit as st
-from pdf import convert_pdf_to_text
+from pdf import convert_pdf_to_markdown
+
 
 if "input" not in st.session_state:
     st.session_state.input = ""
 
 
-name = st.text_input("Enter pdf file name:")
+file = st.file_uploader("Please choose a pdf-file", type="pdf") 
 
-if st.button("Get transcript"):
-    transcript = convert_pdf_to_text(name)
+if file is not None:
+    name = file.name
+    bytes_data = file.getvalue() 
 
-    if transcript:
-        st.write(transcript)
-        st.session_state.input = transcript
+    markdown = convert_pdf_to_markdown(bytes_data)
+    st.write(markdown)
+    st.session_state.input = markdown
 
 if st.button("Clear"):
     st.session_state.input = ""
