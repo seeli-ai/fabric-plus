@@ -16,6 +16,8 @@ class User(Base):
     name: Mapped[str] = mapped_column(nullable=True)
     password: Mapped[str]
     is_active: Mapped[bool] = mapped_column(default=True)
+    inputs: Mapped[List['Input']] = relationship(
+        'Input', back_populates='user', foreign_keys='Input.user_id')
 
     def __repr__(self):
         return f'<User(name={self.userid}, fullname={self.name}, password={self.password})>'
@@ -63,7 +65,7 @@ class Model(Base):
         'Provider', back_populates='models')
 
     def __repr__(self):
-        return f'{self.short_name} ####'
+        return f'{self.short_name}'
 
 
 class Provider(Base):
@@ -76,3 +78,18 @@ class Provider(Base):
 
     def __repr__(self):
         return f'<Provider(name={self.name})>'
+    
+
+class Input(Base):
+    __tablename__ = 'inputs'
+
+    id: Mapped[int] = mapped_column('id', primary_key=True, autoincrement=True)
+    title: Mapped[str] = mapped_column(nullable=True)
+    text: Mapped[str] = mapped_column(Text, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(default=datetime.now)
+    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'))
+    user: Mapped['User'] = relationship(
+        'User', back_populates='inputs')
+
+    def __repr__(self):
+        return f'{self.title}'

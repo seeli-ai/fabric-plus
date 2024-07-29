@@ -1,4 +1,4 @@
-from models import Base, User, Prompt, Parameter, Model, Provider
+from models import Base, User, Prompt, Parameter, Model, Provider, Input
 from sqlalchemy.orm import Session
 from typing import List
 from connect_db import engine
@@ -227,3 +227,35 @@ def delete_provider(provider_id: int) -> Provider:
     session.delete(provider)
     session.commit()
     return provider
+
+# Input
+
+# Read
+
+def get_input_by_id(input_id: int) -> Input:
+    return session.query(Input).filter(Input.id == input_id).first()
+
+def get_all_inputs() -> List[Input]:
+    return session.query(Input).all()
+
+def get_inputs_by_user_id(user_id: int) -> List[Input]:
+    return session.query(Input).filter(Input.user_id == user_id).all()
+
+def get_last_input_by_user_id(user_id: int) -> Input:
+    return session.query(Input).filter(Input.user_id == user_id).order_by(Input.created_at.desc()).first()
+
+# Create    
+
+def create_input(user_id: int, titel: str, text: str) -> Input:
+    new_input = Input(user_id=user_id, title=titel, text=text)
+    session.add(new_input)
+    session.commit()
+    return
+
+# Delete
+
+def delete_input(input_id: int) -> Input:
+    input = get_input_by_id(input_id)
+    session.delete(input)
+    session.commit()
+    return input

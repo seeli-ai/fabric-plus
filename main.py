@@ -1,20 +1,21 @@
 import streamlit as st
-from repository import get_all_models, get_all_prompts
+from repository import get_all_models, get_all_prompts, get_user_by_id, get_last_input_by_user_id
 from helpers import Language, find_index_of_model_by_short_name, find_index_of_prompt_by_title
-from langchain_core.output_parsers import StrOutputParser
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_openai import ChatOpenAI
+from ai import call_ai
 from models import Prompt, Model
 
 from dotenv import load_dotenv
 load_dotenv()
 
-
-
 st.session_state.models =  get_all_models()
 st.session_state.prompts = get_all_prompts()
-#st.session_state.prompt = st.session_state.prompts[0]
+st.session_state.languages = list(Language)
+st.session_state.user = get_user_by_id(1)
+st.session_state.last_input = get_last_input_by_user_id(st.session_state.user.id)
 
+if st.session_state.last_input is not None:
+    st.session_state.input = st.session_state.last_input.text
+    st.session_state.input_title = st.session_state.last_input.title
 
 if "language" not in st.session_state:
     st.session_state.language = Language.EN
@@ -28,18 +29,23 @@ if "prompt" not in st.session_state:
 if "input" not in st.session_state:
     st.session_state.input = ""
 
+if "input_title" not in st.session_state:
+    st.session_state.input_title = ""
+
+
 if "output" not in st.session_state:
     st.session_state.output = ""
 
-st.write(st.session_state.prompt)
-if st.session_state.input != "":
-    st.write("There is input")
-language_list = list(Language)
+if "temperature" not in st.session_state:
+    st.session_state.temperature = 0.2
 
 with st.sidebar:
 
+    st.write("### User")
+    st.write(st.session_state.user.name)
+
     st.write("### Language")
-    selected_language_name = st.selectbox("Select a language", options=[language.name for language in language_list], index=language_list.index(st.session_state.language))
+    selected_language_name = st.selectbox("Select a language", options=[language.name for language in list(Language)], index=list(Language).index(st.session_state.language))
     if selected_language_name != st.session_state.language.name:
         st.session_state.language = Language[selected_language_name]
 
@@ -50,10 +56,12 @@ with st.sidebar:
     if selected_model_short_name != st.session_state.model.short_name:
         st.session_state.model = st.session_state.models[find_index_of_model_by_short_name(st.session_state.models, selected_model_short_name)]
 
+    st.write("### Temperature")
+    st.session_state.temperature = st.slider("Select a temperature", min_value=0.0, max_value=1.0, value=st.session_state.temperature, step=0.01)
 
 
 
-tab1, tab2, tab3, tab4 = st.tabs(["Select Pattern", "Output" , "Input", "Edit Input"])
+tab1, tab3, tab4 = st.tabs(["Generate", "Input", "Edit Input"])
 
 with tab1:
     selected_prompt_title = st.selectbox(
@@ -65,28 +73,19 @@ with tab1:
         st.write(st.session_state.prompt.description)
 
         if st.button("Generate"):
-            model = ChatOpenAI()
-            prompt = ChatPromptTemplate.from_messages([
-            ("system", st.session_state.prompt.system_prompt),
-            ("human", "{input}")
-            ])
+            input = f"# {st.session_state.input_title}\n\n{st.session_state.input}"
+            st.session_state.output = call_ai(st.session_state.model, st.session_state.prompt, input, st.session_state.temperature)
 
-            parser = StrOutputParser()
+    if st.session_state.output != "":
+        st.write("#### Output")
+        st.write(st.session_state.output)
 
-            chain = prompt | model | parser
 
-            res = chain.invoke({
-                "input": st.session_state.input
-            })
 
-            st.session_state.output = res
-
-with tab2:
-    st.write("## Output")
-    st.write(st.session_state.output)
 
 with tab3:
-    st.write("## Input")
+    # st.write("#### Input")
+    st.write (f"#### {st.session_state.input_title}\n")
     st.write(st.session_state.input)
 
 with tab4:

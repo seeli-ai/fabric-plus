@@ -89,9 +89,9 @@ def get_transcript(url, lang="en") -> str:
         except Exception as e:
             transcript_text = f"Transcript not available in the selected language ({lang}). ({e})"
 
-        transcript_text = f"### {title} \n\n {transcript_text}"
+        #transcript_text = f"### {title} \n\n {transcript_text}"
 
-        return transcript_text.encode('utf-8').decode('unicode-escape')
+        return title, transcript_text.encode('utf-8').decode('unicode-escape')
 
     except HttpError as e:
         print(
