@@ -239,7 +239,7 @@ def get_all_inputs() -> List[Input]:
     return session.query(Input).all()
 
 def get_inputs_by_user_id(user_id: int) -> List[Input]:
-    return session.query(Input).filter(Input.user_id == user_id).all()
+    return session.query(Input).filter(Input.user_id == user_id).order_by(Input.created_at.desc()).all()
 
 def get_last_input_by_user_id(user_id: int) -> Input:
     return session.query(Input).filter(Input.user_id == user_id).order_by(Input.created_at.desc()).first()

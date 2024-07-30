@@ -13,7 +13,8 @@ st.session_state.languages = list(Language)
 st.session_state.user = get_user_by_id(1)
 st.session_state.last_input = get_last_input_by_user_id(st.session_state.user.id)
 
-if st.session_state.last_input is not None:
+
+if st.session_state.last_input is not None and "input" not in st.session_state:
     st.session_state.input = st.session_state.last_input.text
     st.session_state.input_title = st.session_state.last_input.title
 
@@ -45,7 +46,9 @@ with st.sidebar:
     st.write(st.session_state.user.name)
 
     st.write("### Language")
-    selected_language_name = st.selectbox("Select a language", options=[language.name for language in list(Language)], index=list(Language).index(st.session_state.language))
+    if st.session_state.language is None:
+        st.session_state.language = Language.EN
+    selected_language_name = st.selectbox("Select a language", options=[language.name for language in st.session_state.languages], index=st.session_state.languages.index(st.session_state.language))
     if selected_language_name != st.session_state.language.name:
         st.session_state.language = Language[selected_language_name]
 
