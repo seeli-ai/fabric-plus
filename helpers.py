@@ -3,7 +3,7 @@ from enum import Enum
 
 class Language(Enum):
     EN = 1
-    GE = 2
+    DE = 2
 
 
 def find_index_of_model_by_short_name(models, short_name):

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import re
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
@@ -91,7 +92,7 @@ def get_transcript(url, lang="en") -> str:
 
         #transcript_text = f"### {title} \n\n {transcript_text}"
 
-        return title, transcript_text.encode('utf-8').decode('unicode-escape')
+        return title, transcript_text
 
     except HttpError as e:
         print(
