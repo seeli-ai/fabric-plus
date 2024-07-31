@@ -60,8 +60,8 @@ def get_prompt_by_id(prompt_id: int) -> Prompt:
     return session.query(Prompt).filter(Prompt.id == prompt_id).first()
 
 
-def get_all_prompts() -> List[Prompt]:
-    return session.query(Prompt).all()
+def get_all_prompts(language_cd: int = 1) -> List[Prompt]:
+    return session.query(Prompt).filter(Prompt.language_cd == language_cd).all()
 
 
 def get_prompt_by_title(title: str) -> Prompt:

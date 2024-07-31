@@ -31,6 +31,7 @@ class Prompt(Base):
     system_prompt: Mapped[str] = mapped_column(Text)
     user_prompt: Mapped[str] = mapped_column(Text, nullable=True)
     description: Mapped[str] = mapped_column(Text, nullable=True)
+    language_cd: Mapped[int] = mapped_column(default=1)
     created_at: Mapped[datetime] = mapped_column(default=datetime.now)
     parameters: Mapped[List['Parameter']] = relationship(
         'Parameter', back_populates='prompt', foreign_keys='Parameter.prompt_id')

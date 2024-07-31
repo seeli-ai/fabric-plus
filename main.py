@@ -67,8 +67,9 @@ with st.sidebar:
 tab1, tab3, tab4 = st.tabs(["Generate", "Input", "Edit Input"])
 
 with tab1:
+    st.session_state.prompts = get_all_prompts(st.session_state.language.value)
     selected_prompt_title = st.selectbox(
-        "Select a prompt", options=[prompt.title for prompt in st.session_state.prompts], index=find_index_of_prompt_by_title(st.session_state.prompts, st.session_state.prompt.title))
+        "Select a prompt", options=[prompt.title for prompt in st.session_state.prompts]) # , index=find_index_of_prompt_by_title(st.session_state.prompts, st.session_state.prompt.title))
     if selected_prompt_title != st.session_state.prompt.title:
         st.session_state.prompt = st.session_state.prompts[find_index_of_prompt_by_title(st.session_state.prompts, selected_prompt_title)]
     
