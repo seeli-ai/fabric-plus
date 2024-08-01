@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List
 from connect_db import engine
 from datetime import datetime
+import streamlit as st
 
 session = Session(bind=engine)
 
@@ -59,9 +60,11 @@ def delete_user(user_id: int) -> User:
 def get_prompt_by_id(prompt_id: int) -> Prompt:
     return session.query(Prompt).filter(Prompt.id == prompt_id).first()
 
+def get_all_prompts() -> List[Prompt]:
+    return session.query(Prompt).order_by(Prompt.title).all()
 
-def get_all_prompts(language_cd: int = 1) -> List[Prompt]:
-    return session.query(Prompt).filter(Prompt.language_cd == language_cd).all()
+def get_all_prompts_of_a_language(language_cd: int = 1) -> List[Prompt]:
+    return session.query(Prompt).filter(Prompt.language_cd == language_cd).order_by(Prompt.title).all()
 
 
 def get_prompt_by_title(title: str) -> Prompt:
@@ -70,8 +73,9 @@ def get_prompt_by_title(title: str) -> Prompt:
 # Create
 
 
-def create_prompt(title: str, system_prompt: str, user_prompt: str = None, description: str = None) -> Prompt:
-    new_prompt = Prompt(title=title, system_prompt=system_prompt,
+def create_prompt(title: str, system_prompt: str, language_cd : int = 1, user_prompt: str = None, description: str = None) -> Prompt:
+    print(f"Creating prompt with title: {title} and language_cd: {language_cd}")
+    new_prompt = Prompt(title=title, system_prompt=system_prompt, language_cd = language_cd,
                          user_prompt=user_prompt, description=description)
     session.add(new_prompt)
     session.commit()
@@ -238,7 +242,12 @@ def get_input_by_id(input_id: int) -> Input:
 def get_all_inputs() -> List[Input]:
     return session.query(Input).all()
 
-def get_inputs_by_user_id(user_id: int) -> List[Input]:
+def get_inputs_by_user_id(user_id: int = 0) -> List[Input]:
+    if user_id == 0:
+        if "user" not in st.session_state:
+            st.warning("Missing user information")
+            st.stop()
+        user_id = st.session_state.user.id
     return session.query(Input).filter(Input.user_id == user_id).order_by(Input.created_at.desc()).all()
 
 def get_last_input_by_user_id(user_id: int) -> Input:
@@ -251,6 +260,24 @@ def create_input(user_id: int, titel: str, text: str) -> Input:
     session.add(new_input)
     session.commit()
     return
+
+def create_empty_input() -> Input:
+    if "user" not in st.session_state:
+        st.warning("Missing user information")
+        st.stop()
+    new_input = Input(user_id=st.session_state.user.id, title="New Input-Text", text="New Input-Text")
+    session.add(new_input)
+    session.commit()
+    return
+
+# Update
+
+def update_input(input_id: int, **kwargs) -> Input:
+    input = get_input_by_id(input_id)
+    for key, value in kwargs.items():
+        setattr(input, key, value)
+    session.commit()
+    return input
 
 # Delete
 

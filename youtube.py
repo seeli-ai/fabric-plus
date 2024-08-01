@@ -76,7 +76,9 @@ def get_transcript(url, lang="en") -> str:
             id=video_id, part="contentDetails,snippet").execute()
 
         title = video_response['items'][0]['snippet']['title']
+        title = title[:55]
         channel = video_response['items'][0]['snippet']['channelTitle']
+        channel = channel[:20]
 
         title = title + " - " + channel
 

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
@@ -60,3 +61,40 @@ def call_anthropics(model: Model, prompt: Prompt, input: str, temperature: float
     })
 
     return response
+
+
+def translate_prompt(title: str, description: str, text: str) -> str:
+    model_name = "claude-3-5-sonnet-20240620"
+
+    llm = ChatAnthropic(model=model_name)
+
+    instructions = """
+    Translate the following text from English to German:
+    
+    Keep the markdown formatting.
+
+    Only respond with the translated text.
+    """
+
+    prompt = ChatPromptTemplate.from_messages([
+        ("system", instructions),
+        ("human", "{input}")
+    ])
+
+    parser = StrOutputParser()
+
+    chain = prompt | llm | parser
+
+    title_de = chain.invoke({
+        "input": title
+    })
+
+    description_de = chain.invoke({
+        "input": description
+    })
+
+    text_de = chain.invoke({
+        "input": text
+    })
+
+    return title_de, description_de, text_de

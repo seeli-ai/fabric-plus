@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from sqlalchemy import ForeignKey, Text
 from datetime import datetime, date
@@ -38,6 +39,11 @@ class Prompt(Base):
 
     def __repr__(self):
         return f'<Prompt(prompt={self.title}, created_at={self.created_at})>'
+    
+    def __str__(self) -> str:
+        if self.language_cd == 2:
+           return self.title + " (DE)"
+        return self.title + " (EN)"
 
 
 class Parameter(Base):
@@ -94,3 +100,6 @@ class Input(Base):
 
     def __repr__(self):
         return f'{self.title}'
+    
+    def __str__(self):
+        return f'{self.title} --- {self.created_at.strftime("%d.%m.%Y %H:%M:%S")}'
