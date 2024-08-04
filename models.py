@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
-from sqlalchemy import ForeignKey, Text
+from sqlalchemy import ForeignKey, Text, DateTime
 from datetime import datetime, date
 from typing import Any, List
+
 
 
 class Base(DeclarativeBase):
@@ -93,7 +94,7 @@ class Input(Base):
     id: Mapped[int] = mapped_column('id', primary_key=True, autoincrement=True)
     title: Mapped[str] = mapped_column(nullable=True)
     text: Mapped[str] = mapped_column(Text, nullable=True)
-    created_at: Mapped[datetime] = mapped_column(default=datetime.now)
+    created_at: Mapped[datetime] = mapped_column(default=datetime.now())
     user_id: Mapped[int] = mapped_column(ForeignKey('users.id'))
     user: Mapped['User'] = relationship(
         'User', back_populates='inputs')

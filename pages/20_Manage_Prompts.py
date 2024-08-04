@@ -13,7 +13,7 @@ class CrudDialog:
     dlg_title = "Prompt"
 
     # repo functions
-    add_func = repo.create_prompt
+    add_func = repo.create_empty_prompt
     read_all_func = repo.get_all_prompts
     transfer_to_one = repo.get_prompt_by_id
     read_one_func = repo.get_prompt_by_id

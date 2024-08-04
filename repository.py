@@ -81,6 +81,17 @@ def create_prompt(title: str, system_prompt: str, language_cd : int = 1, user_pr
     session.commit()
     return new_prompt
 
+def create_empty_prompt(id = None) -> Prompt:
+    title = "New Prompt"
+    system_prompt = "New Prompt"
+    language_cd = 1
+    description = "New Prompt"
+    new_prompt = Prompt(title=title, system_prompt=system_prompt, language_cd = language_cd,
+                         description=description)
+    session.add(new_prompt)
+    session.commit()
+    return new_prompt
+
 # Update
 
 
@@ -259,16 +270,16 @@ def create_input(user_id: int, titel: str, text: str) -> Input:
     new_input = Input(user_id=user_id, title=titel, text=text)
     session.add(new_input)
     session.commit()
-    return
+    return new_input
 
-def create_empty_input() -> Input:
+def create_empty_input(id: int = 0) -> Input:
     if "user" not in st.session_state:
         st.warning("Missing user information")
         st.stop()
     new_input = Input(user_id=st.session_state.user.id, title="New Input-Text", text="New Input-Text")
     session.add(new_input)
     session.commit()
-    return
+    return new_input
 
 # Update
 

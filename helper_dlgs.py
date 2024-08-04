@@ -1,10 +1,11 @@
 import streamlit as st
 import repository as repo
 
+
 @st.dialog("Confirm Delete")
 def confirm_delete(item):
     st.write(f"Are you sure you want to delete {item}?")
-    c1, c2 = st.columns(2)
+    c1, dummy, c2 = st.columns([1,5,1])
     if c1.button("✖️"):
        st.session_state.confirm_delete = False
        st.rerun()
