@@ -9,3 +9,4 @@ requests
 google-api-python-client
 youtube-transcript-api
 SQLAlchemy 
+st-copy-to-clipboard

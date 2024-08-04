@@ -9,7 +9,7 @@ load_dotenv()
 
 st.session_state.models =  get_all_models()
 st.session_state.prompts = get_all_prompts_of_a_language()
-st.session_state.languages = list(Language)
+st.session_state.languages = ["EN", "DE"]
 st.session_state.user = get_user_by_id(1)
 st.session_state.last_input = get_last_input_by_user_id(st.session_state.user.id)
 
@@ -20,7 +20,7 @@ if st.session_state.last_input is not None and "input" not in st.session_state:
     st.session_state.input_created_at = st.session_state.last_input.created_at
 
 if "language" not in st.session_state:
-    st.session_state.language = Language.EN
+    st.session_state.language = st.session_state.languages[0]
 
 if "model" not in st.session_state:
     st.session_state.model = st.session_state.models[0]

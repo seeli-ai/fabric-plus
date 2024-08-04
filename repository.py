@@ -63,7 +63,11 @@ def get_prompt_by_id(prompt_id: int) -> Prompt:
 def get_all_prompts() -> List[Prompt]:
     return session.query(Prompt).order_by(Prompt.title).all()
 
-def get_all_prompts_of_a_language(language_cd: int = 1) -> List[Prompt]:
+def get_all_prompts_of_a_language(language: str  = "EN") -> List[Prompt]:
+    if language == "EN":
+        language_cd = 1
+    else:
+        language_cd = 2
     return session.query(Prompt).filter(Prompt.language_cd == language_cd).order_by(Prompt.title).all()
 
 
@@ -266,8 +270,8 @@ def get_last_input_by_user_id(user_id: int) -> Input:
 
 # Create    
 
-def create_input(user_id: int, titel: str, text: str) -> Input:
-    new_input = Input(user_id=user_id, title=titel, text=text)
+def create_input(user_id: int, title: str, text: str) -> Input:
+    new_input = Input(user_id=user_id, title=title, text=text)
     session.add(new_input)
     session.commit()
     return new_input
