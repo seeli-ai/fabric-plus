@@ -2,7 +2,9 @@
 import streamlit as st
 from pdf import convert_pdf_to_markdown
 from repository import create_input
+from helpers import Language, ensure_logged_in
 
+ensure_logged_in()
 
 if "input" not in st.session_state:
     st.session_state.input = ""

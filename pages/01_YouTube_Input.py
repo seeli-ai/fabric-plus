@@ -2,7 +2,9 @@
 import streamlit as st
 from youtube import get_transcript
 from repository import create_input
-from helpers import Language
+from helpers import Language, ensure_logged_in
+
+ensure_logged_in()
 
 st.session_state.languages = ["EN", "DE"]
 

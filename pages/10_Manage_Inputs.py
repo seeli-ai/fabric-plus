@@ -7,6 +7,10 @@ from helpers import Language
 from ai import translate_prompt
 import crud_dialog
 
+from helpers import Language, ensure_logged_in
+
+ensure_logged_in()
+
 class CrudDialog:
 
     dlg_title = "Your Inputs"

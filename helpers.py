@@ -1,4 +1,5 @@
 from enum import Enum
+import streamlit as st
 
 
 class Language(Enum):
@@ -17,3 +18,12 @@ def find_index_of_prompt_by_title(prompts, title):
         if model.title == title:
             return i
     return None
+
+
+def ensure_logged_in():
+    if 'logged_in' not in st.session_state:
+        st.switch_page("Home.py")
+        st.stop()
+    if not st.session_state.logged_in:
+        st.switch_page("Home.py")
+        st.stop()

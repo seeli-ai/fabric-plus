@@ -8,6 +8,10 @@ from ai import translate_prompt
 from repository import create_prompt
 import crud_dialog
 
+from helpers import Language, ensure_logged_in
+
+ensure_logged_in()
+
 class CrudDialog:
 
     dlg_title = "Prompt"

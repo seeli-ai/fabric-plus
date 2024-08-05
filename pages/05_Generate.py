@@ -4,11 +4,11 @@ from helpers import Language, find_index_of_model_by_short_name, find_index_of_p
 from ai import call_ai
 from models import Prompt, Model
 from streamlit.components.v1 import html
-import pyperclip
-import json
 from st_copy_to_clipboard import st_copy_to_clipboard
 
-import urllib.parse
+from helpers import ensure_logged_in
+
+ensure_logged_in()
 
 
 
