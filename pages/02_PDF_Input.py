@@ -4,7 +4,10 @@ from pdf import convert_pdf_to_markdown
 from repository import create_input
 from helpers import Language, ensure_logged_in
 
+
 ensure_logged_in()
+
+
 
 if "input" not in st.session_state:
     st.session_state.input = ""
@@ -16,7 +19,7 @@ if file is not None:
     name = file.name
     bytes_data = file.getvalue() 
 
-    markdown = convert_pdf_to_markdown(bytes_data)
+    markdown = convert_pdf_to_markdown(name, bytes_data)
     split_markdown = markdown.split("\n")
     title = split_markdown[0]
     length_of_title = len(title)

@@ -1,13 +1,43 @@
 import requests
 import os
+from dotenv import load_dotenv
+import time
 
-def convert_pdf_to_markdown(pdf_content):
-    url = "http://marker:8000/convert"
-    files = {'pdf_file': ("file.pdf", pdf_content, 'application/pdf')}
+load_dotenv()
 
-    response = requests.post(url, files=files)
+marker_key = os.getenv("MARKER_API_KEY")
+url = "https://www.datalab.to/api/v1/marker"
 
-    json_response = response.json()[0]
+headers = {"X-Api-Key": f"{marker_key}"}
+
+
+def convert_pdf_to_markdown(filename, pdf_content):
+
+    form_data = {
+       'file': (filename, pdf_content, 'application/pdf'),
+       "langs": (None, "en"),
+       "force_ocr": (None, False),
+       "paginate": (None, False),
+       "extract_images": (None, False)
+    }
+
+    response = requests.post(url, files=form_data, headers=headers)
+
+    data = response.json()
+
+    max_polls = 300
+    check_url = data["request_check_url"]
+
+    for i in range(max_polls):
+        time.sleep(2)
+        # Don't forget to send the auth headers
+        response = requests.get(check_url, headers=headers)
+        data = response.json()
+
+        if data["status"] == "complete":
+            break
+
+    json_response = response.json()
 
     markdown = json_response['markdown']
 
