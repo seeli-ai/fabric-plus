@@ -8,7 +8,7 @@ import os
 from models import Prompt, Model
 
 from dotenv import load_dotenv
-load_dotenv()
+# load_dotenv()
 
 def call_ai(model: Model, prompt: Prompt, input: str, temperature: float) -> str:
     

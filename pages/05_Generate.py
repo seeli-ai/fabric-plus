@@ -14,7 +14,7 @@ ensure_logged_in()
 
 
 from dotenv import load_dotenv
-load_dotenv()
+# load_dotenv()
 
 st.session_state.models =  get_all_models()
 st.session_state.prompts = get_all_prompts_of_a_language()

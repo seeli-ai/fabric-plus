@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 import time
 
-load_dotenv()
+# load_dotenv()
 
 marker_key = os.getenv("MARKER_API_KEY")
 url = "https://www.datalab.to/api/v1/marker"
