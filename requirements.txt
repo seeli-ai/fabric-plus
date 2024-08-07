@@ -10,6 +10,4 @@ google-api-python-client
 youtube-transcript-api
 SQLAlchemy 
 st-copy-to-clipboard
-mysql-connector-python
 PyMySQL
-mysqlclient
