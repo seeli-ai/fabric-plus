@@ -1,3 +1,4 @@
+from dotenv import load_dotenv
 import streamlit as st
 from repository import get_all_models, get_user_by_id, get_last_input_by_user_id, get_all_prompts_of_a_language
 from helpers import Language, find_index_of_model_by_short_name, find_index_of_prompt_by_title
@@ -11,16 +12,14 @@ from helpers import ensure_logged_in
 ensure_logged_in()
 
 
-
-
-from dotenv import load_dotenv
 # load_dotenv()
 
-st.session_state.models =  get_all_models()
+st.session_state.models = get_all_models()
 st.session_state.prompts = get_all_prompts_of_a_language()
 st.session_state.languages = ["EN", "DE"]
 st.session_state.user = get_user_by_id(1)
-st.session_state.last_input = get_last_input_by_user_id(st.session_state.user.id)
+st.session_state.last_input = get_last_input_by_user_id(
+    st.session_state.user.id)
 
 
 if st.session_state.last_input is not None and "input" not in st.session_state:
@@ -35,7 +34,7 @@ if "model" not in st.session_state:
     st.session_state.model = st.session_state.models[0]
 
 if "prompt" not in st.session_state:
-   st.session_state.prompt = st.session_state.prompts[0]
+    st.session_state.prompt = st.session_state.prompts[0]
 
 if "input" not in st.session_state:
     st.session_state.input = ""
@@ -57,32 +56,36 @@ with st.sidebar:
 
     st.write("### Language")
 
-    selected_language_name = st.selectbox("Select a language", options=st.session_state.languages, index=st.session_state.languages.index(st.session_state.language))
+    selected_language_name = st.selectbox("Select a language", options=st.session_state.languages,
+                                          index=st.session_state.languages.index(st.session_state.language))
     if selected_language_name != st.session_state.language:
         st.session_state.language = selected_language_name
 
     st.write("### Model")
     selected_model_short_name = st.selectbox(
         "Select a model", options=[model.short_name for model in st.session_state.models], index=find_index_of_model_by_short_name(st.session_state.models, st.session_state.model.short_name))
-    
+
     if selected_model_short_name != st.session_state.model.short_name:
-        st.session_state.model = st.session_state.models[find_index_of_model_by_short_name(st.session_state.models, selected_model_short_name)]
+        st.session_state.model = st.session_state.models[find_index_of_model_by_short_name(
+            st.session_state.models, selected_model_short_name)]
 
     st.write("### Temperature")
-    st.session_state.temperature = st.slider("Select a temperature", min_value=0.0, max_value=1.0, value=st.session_state.temperature, step=0.01)
-
+    st.session_state.temperature = st.slider(
+        "Select a temperature", min_value=0.0, max_value=1.0, value=st.session_state.temperature, step=0.01)
 
 
 tab1, tab2 = st.tabs(["Generate", "Input"])
 
 with tab1:
-    
-    st.session_state.prompts = get_all_prompts_of_a_language(st.session_state.language)
+
+    st.session_state.prompts = get_all_prompts_of_a_language(
+        st.session_state.language)
     selected_prompt_title = st.selectbox(
-        "Select a prompt", options=[prompt.title for prompt in st.session_state.prompts]) # , index=find_index_of_prompt_by_title(st.session_state.prompts, st.session_state.prompt.title))
+        "Select a prompt", options=[prompt.title for prompt in st.session_state.prompts], index=find_index_of_prompt_by_title(st.session_state.prompts, st.session_state.prompt.title))
     if selected_prompt_title != st.session_state.prompt.title:
-        st.session_state.prompt = st.session_state.prompts[find_index_of_prompt_by_title(st.session_state.prompts, selected_prompt_title)]
-    
+        st.session_state.prompt = st.session_state.prompts[find_index_of_prompt_by_title(
+            st.session_state.prompts, selected_prompt_title)]
+
     if st.session_state.prompt is not None:
         st.write(st.session_state.prompt.description)
 
@@ -90,28 +93,19 @@ with tab1:
 
         if col1.button("Generate"):
             input = f"# {st.session_state.input_title}\n\n{st.session_state.input}"
-            st.session_state.output = call_ai(st.session_state.model, st.session_state.prompt, input, st.session_state.temperature)
+            st.session_state.output = call_ai(
+                st.session_state.model, st.session_state.prompt, input, st.session_state.temperature)
 
         with col2:
-             st_copy_to_clipboard(st.session_state.output)
+            st_copy_to_clipboard(st.session_state.output)
 
     if st.session_state.output != "":
         st.write("# Output")
         st.write(st.session_state.output)
 
 
-
-
-
 with tab2:
     # st.write("#### Input")
-    st.write (f"#### {st.session_state.input_title}\n")
+    st.write(f"#### {st.session_state.input_title}\n")
     st.write(f"Created at: {st.session_state.input_created_at}")
     st.write(st.session_state.input)
-
-
-
-
-
-
-
