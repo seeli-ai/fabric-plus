@@ -12,3 +12,4 @@ SQLAlchemy
 st-copy-to-clipboard
 mysql-connector-python
 PyMySQL
+mysqlclient
