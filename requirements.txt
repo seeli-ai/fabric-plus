@@ -11,3 +11,4 @@ youtube-transcript-api
 SQLAlchemy 
 st-copy-to-clipboard
 PyMySQL
+pandas
