@@ -1,7 +1,5 @@
-from sqlalchemy import create_engine, text
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.orm import declarative_base
-from urllib.parse import quote_plus
+from sqlalchemy import create_engine
+import pymysql
 import os
 
 
@@ -19,11 +17,11 @@ engine = create_engine(
     }
 )
 
-#Base = declarative_base()
+# Base = declarative_base()
 
 # Drop all tables
-#Base.metadata.drop_all(engine)
+# Base.metadata.drop_all(engine)
 
-#with engine.connect() as connection:
+# with engine.connect() as connection:
 #    pass
-    #result = connection.execute(text('select "Hallo" '))
+# result = connection.execute(text('select "Hallo" '))

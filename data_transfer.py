@@ -1,6 +1,7 @@
 import sqlite3
 from sqlalchemy import create_engine, MetaData, Table
 from sqlalchemy.orm import sessionmaker
+import pymysql
 
 # SQLite connection
 sqlite_conn = sqlite3.connect('data.db')
@@ -30,6 +31,8 @@ metadata = MetaData()
 metadata.reflect(bind=mysql_engine)
 
 # Function to transfer data for a single table
+
+
 def transfer_table(table_name):
     # Fetch all data from SQLite
     sqlite_cursor.execute(f"SELECT * FROM {table_name}")
@@ -51,8 +54,10 @@ def transfer_table(table_name):
     mysql_conn.commit()
     print(f"Transferred {len(rows)} rows to {table_name}")
 
+
 # List of tables to transfer
-tables = ['users', 'prompts', 'providers', "models", "inputs"]  # Add all your table names here
+tables = ['users', 'prompts', 'providers', "models",
+          "inputs"]  # Add all your table names here
 
 # Transfer each table
 for table in tables:
