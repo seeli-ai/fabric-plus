@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from sqlalchemy import ForeignKey, Text, DateTime, String
-from sqlalchemy.dialects.mysql import MEDIUMTEXT
 from datetime import datetime, date
 from typing import Any, List
 import pymysql
@@ -31,7 +30,7 @@ class Prompt(Base):
 
     id: Mapped[int] = mapped_column('id', primary_key=True, autoincrement=True)
     title: Mapped[str] = mapped_column(String(350))
-    system_prompt: Mapped[str] = mapped_column(MEDIUMTEXT)
+    system_prompt: Mapped[str] = mapped_column(Text(length=16777215))
     user_prompt: Mapped[str] = mapped_column(Text, nullable=True)
     description: Mapped[str] = mapped_column(Text, nullable=True)
     language_cd: Mapped[int] = mapped_column(default=1)
@@ -94,7 +93,7 @@ class Input(Base):
 
     id: Mapped[int] = mapped_column('id', primary_key=True, autoincrement=True)
     title: Mapped[str] = mapped_column(String(350), nullable=True)
-    text: Mapped[str] = mapped_column(MEDIUMTEXT, nullable=True)
+    text: Mapped[str] = mapped_column(Text(length=16777215), nullable=True)
     created_at: Mapped[datetime] = mapped_column(default=datetime.now())
     user_id: Mapped[int] = mapped_column(ForeignKey('users.id'))
     user: Mapped['User'] = relationship(
