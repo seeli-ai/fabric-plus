@@ -6,16 +6,18 @@ from models import Prompt, Model, User
 from dotenv import load_dotenv
 import hashlib
 
+
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
+
 
 def login():
     st.title("Login")
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
-    
+
     if st.button("Login"):
-        user : User = get_user_by_userid(username)
+        user: User = get_user_by_userid(username)
         if user is None or user.is_active == False:
             st.error("Incorrect username or password")
             st.session_state.logged_in = False
@@ -33,15 +35,16 @@ def login():
             st.session_state.user = None
             st.stop()
 
+
 def main_app():
 
-    #load_dotenv()
+    # load_dotenv()
 
-    st.session_state.models =  get_all_models()
+    st.session_state.models = get_all_models()
     st.session_state.prompts = get_all_prompts_of_a_language()
     st.session_state.languages = ["EN", "DE"]
-    st.session_state.last_input = get_last_input_by_user_id(st.session_state.user.id)
-
+    st.session_state.last_input = get_last_input_by_user_id(
+        st.session_state.user.id)
 
     if st.session_state.last_input is not None and "input" not in st.session_state:
         st.session_state.input = st.session_state.last_input.text
@@ -63,23 +66,22 @@ def main_app():
     if "input_title" not in st.session_state:
         st.session_state.input_title = ""
 
-
     if "output" not in st.session_state:
         st.session_state.output = ""
 
     if "temperature" not in st.session_state:
-        st.session_state.temperature = 0.2
+        st.session_state.temperature = 0.05
 
     with st.sidebar:
 
         st.write("### User")
         st.write(st.session_state.user.name)
 
-
     st.write("# Your current Input:")
     st.write(f"### {st.session_state.input_title}")
     if "input_created_at" in st.session_state:
-        st.write(f"Created at: {st.session_state.input_created_at.strftime('%d.%m.%Y %H:%M:%S')}")
+        st.write(
+            f"Created at: {st.session_state.input_created_at.strftime('%d.%m.%Y %H:%M:%S')}")
     st.write(st.session_state.input)
 
 
@@ -90,7 +92,3 @@ if not st.session_state.logged_in:
     login()
 else:
     main_app()
-
-
-
-

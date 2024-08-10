@@ -13,6 +13,7 @@ def find_index_of_model_by_short_name(models, short_name):
             return i
     return None
 
+
 def find_index_of_prompt_by_title(prompts, title):
     for i, model in enumerate(prompts):
         if model.title == title:
@@ -27,3 +28,12 @@ def ensure_logged_in():
     if not st.session_state.logged_in:
         st.switch_page("Home.py")
         st.stop()
+
+
+def get_title_and_text(markdown: str):
+    split_markdown = markdown.split("\n")
+    title = split_markdown[0]
+    length_of_title = len(title)
+    markdown = markdown[length_of_title + 1:]
+    title = title.replace("#", "").strip()
+    return title, markdown

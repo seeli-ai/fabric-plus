@@ -1,13 +1,13 @@
 from dotenv import load_dotenv
 import streamlit as st
-from repository import get_all_models, get_user_by_id, get_last_input_by_user_id, get_all_prompts_of_a_language
+from repository import get_all_models, get_user_by_id, get_last_input_by_user_id, get_all_prompts_of_a_language, create_input
 from helpers import Language, find_index_of_model_by_short_name, find_index_of_prompt_by_title
 from ai import call_ai
 from models import Prompt, Model
 from streamlit.components.v1 import html
 from st_copy_to_clipboard import st_copy_to_clipboard
 
-from helpers import ensure_logged_in
+from helpers import ensure_logged_in, get_title_and_text
 
 ensure_logged_in()
 
@@ -89,15 +89,27 @@ with tab1:
     if st.session_state.prompt is not None:
         st.write(st.session_state.prompt.description)
 
-        col1, dummy, col2 = st.columns([1, 5, 1])
+        col1, dummy, col2, col3 = st.columns([2, 3, 3, 1])
 
         if col1.button("Generate"):
             input = f"# {st.session_state.input_title}\n\n{st.session_state.input}"
             st.session_state.output = call_ai(
                 st.session_state.model, st.session_state.prompt, input, st.session_state.temperature)
 
-        with col2:
-            st_copy_to_clipboard(st.session_state.output)
+        if st.session_state.output is not None and len(st.session_state.output) > 5:
+            if col2.button("Create Input form Output"):
+
+                title, text = get_title_and_text(st.session_state.output)
+                new_input = create_input(
+                    user_id=st.session_state.user.id, title=title, text=text)
+
+                st.session_state.input = new_input.text
+                st.session_state.input_title = new_input.title
+                st.session_state.input_id = new_input.id
+                st.session_state.input_created_at = new_input.created_at
+
+            with col3:
+                st_copy_to_clipboard(st.session_state.output)
 
     if st.session_state.output != "":
         st.write("# Output")
