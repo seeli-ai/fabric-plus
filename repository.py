@@ -6,6 +6,8 @@ from datetime import datetime
 import streamlit as st
 
 session = Session(bind=engine)
+session.rollback()
+print("Session created")
 
 # User
 
@@ -60,10 +62,12 @@ def delete_user(user_id: int) -> User:
 def get_prompt_by_id(prompt_id: int) -> Prompt:
     return session.query(Prompt).filter(Prompt.id == prompt_id).first()
 
+
 def get_all_prompts() -> List[Prompt]:
     return session.query(Prompt).order_by(Prompt.title).all()
 
-def get_all_prompts_of_a_language(language: str  = "EN") -> List[Prompt]:
+
+def get_all_prompts_of_a_language(language: str = "EN") -> List[Prompt]:
     if language == "EN":
         language_cd = 1
     else:
@@ -77,21 +81,23 @@ def get_prompt_by_title(title: str) -> Prompt:
 # Create
 
 
-def create_prompt(title: str, system_prompt: str, language_cd : int = 1, user_prompt: str = None, description: str = None) -> Prompt:
-    print(f"Creating prompt with title: {title} and language_cd: {language_cd}")
-    new_prompt = Prompt(title=title, system_prompt=system_prompt, language_cd = language_cd,
-                         user_prompt=user_prompt, description=description)
+def create_prompt(title: str, system_prompt: str, language_cd: int = 1, user_prompt: str = None, description: str = None) -> Prompt:
+    print(
+        f"Creating prompt with title: {title} and language_cd: {language_cd}")
+    new_prompt = Prompt(title=title, system_prompt=system_prompt, language_cd=language_cd,
+                        user_prompt=user_prompt, description=description)
     session.add(new_prompt)
     session.commit()
     return new_prompt
 
-def create_empty_prompt(id = None) -> Prompt:
+
+def create_empty_prompt(id=None) -> Prompt:
     title = "New Prompt"
     system_prompt = "New Prompt"
     language_cd = 1
     description = "New Prompt"
-    new_prompt = Prompt(title=title, system_prompt=system_prompt, language_cd = language_cd,
-                         description=description)
+    new_prompt = Prompt(title=title, system_prompt=system_prompt, language_cd=language_cd,
+                        description=description)
     session.add(new_prompt)
     session.commit()
     return new_prompt
@@ -251,11 +257,14 @@ def delete_provider(provider_id: int) -> Provider:
 
 # Read
 
+
 def get_input_by_id(input_id: int) -> Input:
     return session.query(Input).filter(Input.id == input_id).first()
 
+
 def get_all_inputs() -> List[Input]:
     return session.query(Input).all()
+
 
 def get_inputs_by_user_id(user_id: int = 0) -> List[Input]:
     if user_id == 0:
@@ -265,10 +274,12 @@ def get_inputs_by_user_id(user_id: int = 0) -> List[Input]:
         user_id = st.session_state.user.id
     return session.query(Input).filter(Input.user_id == user_id).order_by(Input.created_at.desc()).all()
 
+
 def get_last_input_by_user_id(user_id: int) -> Input:
     return session.query(Input).filter(Input.user_id == user_id).order_by(Input.created_at.desc()).first()
 
-# Create    
+# Create
+
 
 def create_input(user_id: int, title: str, text: str) -> Input:
     new_input = Input(user_id=user_id, title=title, text=text)
@@ -276,16 +287,19 @@ def create_input(user_id: int, title: str, text: str) -> Input:
     session.commit()
     return new_input
 
+
 def create_empty_input(id: int = 0) -> Input:
     if "user" not in st.session_state:
         st.warning("Missing user information")
         st.stop()
-    new_input = Input(user_id=st.session_state.user.id, title="New Input-Text", text="New Input-Text")
+    new_input = Input(user_id=st.session_state.user.id,
+                      title="New Input-Text", text="New Input-Text")
     session.add(new_input)
     session.commit()
     return new_input
 
 # Update
+
 
 def update_input(input_id: int, **kwargs) -> Input:
     input = get_input_by_id(input_id)
@@ -295,6 +309,7 @@ def update_input(input_id: int, **kwargs) -> Input:
     return input
 
 # Delete
+
 
 def delete_input(input_id: int) -> Input:
     input = get_input_by_id(input_id)
