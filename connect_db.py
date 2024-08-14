@@ -5,7 +5,7 @@ import os
 
 connection_string = os.getenv("DB")
 # db = "mysql+pymysql://dbu1394558:NoFog24680!!!@db5016174451.hosting-data.io:3306/dbs13163522"
-# connection_string = "mysql://avnadmin:AVNS_ajVJ-mCpWmW60M7WOgj@mysql-fabric-fabric-plus.h.aivencloud.com:12370/defaultdb"
+# connection_string = "mysql+pymysql://avnadmin
 
 # engine = create_engine('sqlite:///data.db', echo=False)
 engine = create_engine(

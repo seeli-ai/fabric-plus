@@ -8,7 +8,7 @@ sqlite_conn = sqlite3.connect('data.db')
 sqlite_cursor = sqlite_conn.cursor()
 
 # MySQL connection
-connection_string = ""
+connection_string = "mysql+pymysql://dbu1394558:NoFog246"
 
 # engine = create_engine('sqlite:///data.db', echo=False)
 mysql_engine = create_engine(
