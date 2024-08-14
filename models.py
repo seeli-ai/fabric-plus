@@ -70,7 +70,7 @@ class Model(Base):
     name: Mapped[str] = mapped_column(String(50))
     provider_id: Mapped[int] = mapped_column(ForeignKey('providers.id'))
     provider: Mapped['Provider'] = relationship(
-        'Provider', back_populates='models')
+        'Provider', back_populates='models', lazy='joined')
 
     def __repr__(self):
         return f'{self.short_name}'
@@ -97,7 +97,7 @@ class Input(Base):
     created_at: Mapped[datetime] = mapped_column(default=datetime.now())
     user_id: Mapped[int] = mapped_column(ForeignKey('users.id'))
     user: Mapped['User'] = relationship(
-        'User', back_populates='inputs')
+        'User', back_populates='inputs', lazy='joined')
 
     def __repr__(self):
         return f'{self.title}'
