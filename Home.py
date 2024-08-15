@@ -55,7 +55,7 @@ def main_app():
         st.session_state.language = st.session_state.languages[0]
 
     if "model" not in st.session_state:
-        st.session_state.model = st.session_state.models[0]
+        st.session_state.model = st.session_state.models[1]
 
     if "prompt" not in st.session_state:
         st.session_state.prompt = st.session_state.prompts[0]
