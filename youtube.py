@@ -85,16 +85,17 @@ def get_transcript(url, lang="en") -> str:
         # Get video transcript
         try:
             transcript_list = YouTubeTranscriptApi.get_transcript(
-                video_id, languages=[lang])
+                video_id=video_id)
+            # video_id, languages=[lang])
             transcript_text = " ".join([item["text"]
                                        for item in transcript_list])
-            # transcript_text = transcript_text.replace("\n", " ")
+            transcript_text = transcript_text.replace("\n", " ")
         except Exception as e:
             transcript_text = f"Transcript not available in the selected language ({lang}). ({e})"
 
-        #transcript_text = f"### {title} \n\n {transcript_text}"
+        # transcript_text = f"### {title} \n\n {transcript_text}"
 
-        return title, transcript_text
+        return title + " " + video_id, transcript_text
 
     except HttpError as e:
         print(

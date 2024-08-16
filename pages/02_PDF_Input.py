@@ -25,7 +25,7 @@ if file is not None:
     new_input = create_input(
         user_id=st.session_state.user.id, title=title, text=markdown)
 
-    st.session_state.input = new_input.text
-    st.session_state.input_title = new_input.title
+    st.session_state.input = markdown
+    st.session_state.input_title = title
     st.session_state.input_id = new_input.id
     st.session_state.input_created_at = new_input.created_at
