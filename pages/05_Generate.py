@@ -1,10 +1,7 @@
-from dotenv import load_dotenv
 import streamlit as st
 from repository import get_all_models, get_user_by_id, get_last_input_by_user_id, get_all_prompts_of_a_language, create_input
-from helpers import Language, find_index_of_model_by_short_name, find_index_of_prompt_by_title
+from helpers import find_index_of_model_by_short_name, find_index_of_prompt_by_title
 from ai import call_ai
-from models import Prompt, Model
-from streamlit.components.v1 import html
 from st_copy_to_clipboard import st_copy_to_clipboard
 
 from helpers import ensure_logged_in, get_title_and_text
