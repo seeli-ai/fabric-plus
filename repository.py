@@ -55,7 +55,7 @@ def create_user(userid: str, name: str, password: str, is_active: bool = True) -
 
 def update_user(user_id: int, **kwargs) -> User:
     session = next(get_db_session())
-    user = get_user_by_id(user_id)
+    user = session.query(User).filter(User.id == user_id).first()
     for key, value in kwargs.items():
         setattr(user, key, value)
     session.commit()
@@ -66,7 +66,7 @@ def update_user(user_id: int, **kwargs) -> User:
 
 def delete_user(user_id: int) -> User:
     session = next(get_db_session())
-    user = get_user_by_id(user_id)
+    user = session.query(User).filter(User.id == user_id).first()
     session.delete(user)
     session.commit()
     return user
@@ -130,7 +130,7 @@ def create_empty_prompt(id=None) -> Prompt:
 
 def update_prompt(prompt_id: int, **kwargs) -> Prompt:
     session = next(get_db_session())
-    prompt = get_prompt_by_id(prompt_id)
+    prompt = session.query(Prompt).filter(Prompt.id == prompt_id).first()
     for key, value in kwargs.items():
         setattr(prompt, key, value)
     session.commit()
@@ -141,7 +141,7 @@ def update_prompt(prompt_id: int, **kwargs) -> Prompt:
 
 def delete_prompt(prompt_id: int) -> Prompt:
     session = next(get_db_session())
-    prompt = get_prompt_by_id(prompt_id)
+    prompt = session.query(Prompt).filter(Prompt.id == prompt_id).first()
     session.delete(prompt)
     session.commit()
     return prompt
@@ -180,7 +180,8 @@ def create_parameter(name: str, type: int, prompt_id: int) -> Parameter:
 
 def update_parameter(parameter_id: int, **kwargs) -> Parameter:
     session = next(get_db_session())
-    parameter = get_parameter_by_id(parameter_id)
+    parameter = session.query(Parameter).filter(
+        Parameter.id == parameter_id).first()
     for key, value in kwargs.items():
         setattr(parameter, key, value)
     session.commit()
@@ -191,7 +192,8 @@ def update_parameter(parameter_id: int, **kwargs) -> Parameter:
 
 def delete_parameter(parameter_id: int) -> Parameter:
     session = next(get_db_session())
-    parameter = get_parameter_by_id(parameter_id)
+    parameter = session.query(Parameter).filter(
+        Parameter.id == parameter_id).first()
     session.delete(parameter)
     session.commit()
     return parameter
@@ -230,7 +232,7 @@ def create_model(name: str, provider_id: int) -> Model:
 
 def update_model(model_id: int, **kwargs) -> Model:
     session = next(get_db_session())
-    model = get_model_by_id(model_id)
+    model = session.query(Model).filter(Model.id == model_id).first()
     for key, value in kwargs.items():
         setattr(model, key, value)
     session.commit
@@ -241,7 +243,7 @@ def update_model(model_id: int, **kwargs) -> Model:
 
 def delete_model(model_id: int) -> Model:
     session = next(get_db_session())
-    model = get_model_by_id(model_id)
+    model = session.query(Model).filter(Model.id == model_id).first()
     session.delete(model)
     session.commit()
     return model
@@ -280,7 +282,8 @@ def create_provider(name: str) -> Provider:
 
 def update_provider(provider_id: int, **kwargs) -> Provider:
     session = next(get_db_session())
-    provider = get_provider_by_id(provider_id)
+    provider = session.query(Provider).filter(
+        Provider.id == provider_id).first()
     for key, value in kwargs.items():
         setattr(provider, key, value)
     session.commit()
@@ -291,7 +294,8 @@ def update_provider(provider_id: int, **kwargs) -> Provider:
 
 def delete_provider(provider_id: int) -> Provider:
     session = next(get_db_session())
-    provider = get_provider_by_id(provider_id)
+    provider = session.query(Provider).filter(
+        Provider.id == provider_id).first()
     session.delete(provider)
     session.commit()
     return provider
@@ -318,6 +322,7 @@ def get_inputs_by_user_id(user_id: int = 0) -> List[Input]:
             st.warning("Missing user information")
             st.stop()
         user_id = st.session_state.user.id
+    print(f"Getting inputs for user_id: {user_id}")
     return session.query(Input).filter(Input.user_id == user_id).order_by(Input.created_at.desc()).all()
 
 
@@ -352,8 +357,9 @@ def create_empty_input(id: int = 0) -> Input:
 
 def update_input(input_id: int, **kwargs) -> Input:
     session = next(get_db_session())
-    input = get_input_by_id(input_id)
+    input = session.query(Input).filter(Input.id == input_id).first()
     for key, value in kwargs.items():
+        # print(f"Setting {key} to {value}")
         setattr(input, key, value)
     session.commit()
     return input
@@ -363,7 +369,7 @@ def update_input(input_id: int, **kwargs) -> Input:
 
 def delete_input(input_id: int) -> Input:
     session = next(get_db_session())
-    input = get_input_by_id(input_id)
+    input = session.query(Input).filter(Input.id == input_id).first()
     session.delete(input)
     session.commit()
     return input
