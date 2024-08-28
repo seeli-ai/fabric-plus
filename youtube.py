@@ -55,7 +55,6 @@ def get_comments(youtube, video_id):
 
 
 def get_transcript(url, lang="en") -> str:
-    load_dotenv()
     api_key = os.getenv("YOUTUBE_API_KEY")
     if not api_key:
         print("Error: YOUTUBE_API_KEY not found")
@@ -91,11 +90,11 @@ def get_transcript(url, lang="en") -> str:
                                        for item in transcript_list])
             transcript_text = transcript_text.replace("\n", " ")
         except Exception as e:
-            transcript_text = f"Transcript not available in the selected language ({lang}). ({e})"
+            transcript_text = f"Error getting transcript. ({e})"
 
         # transcript_text = f"### {title} \n\n {transcript_text}"
 
-        return title + " " + video_id, transcript_text
+        return title, transcript_text
 
     except HttpError as e:
         print(

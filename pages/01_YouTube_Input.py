@@ -3,6 +3,7 @@ import streamlit as st
 from youtube import get_transcript
 from repository import create_input
 from helpers import Language, ensure_logged_in
+from repository import get_db_session
 
 ensure_logged_in()
 
@@ -40,7 +41,9 @@ if st.button("Get transcript"):
         st.write(transcript)
         st.session_state.input = transcript
 
-        new_input = create_input(st.session_state.user.id, titel, transcript)
+        session = next(get_db_session())
+
+        new_input = create_input(st.session_state.user.id, titel, transcript, session=session)
 
         st.session_state.input = transcript
         st.session_state.input_title = titel

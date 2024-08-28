@@ -3,6 +3,7 @@ import streamlit as st
 from pdf import convert_pdf_to_markdown
 from repository import create_input
 from helpers import Language, ensure_logged_in, get_title_and_text
+from repository import get_db_session
 
 
 ensure_logged_in()
@@ -22,8 +23,10 @@ if file is not None:
     st.write(f"# {title}")
     st.write(markdown)
 
+    session = next(get_db_session())
+
     new_input = create_input(
-        user_id=st.session_state.user.id, title=title, text=markdown)
+        user_id=st.session_state.user.id, title=title, text=markdown, session=session)
 
     st.session_state.input = markdown
     st.session_state.input_title = title
