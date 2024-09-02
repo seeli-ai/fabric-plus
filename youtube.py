@@ -56,6 +56,7 @@ def get_comments(youtube, video_id):
 
 def get_transcript(url, lang="en") -> str:
     api_key = os.getenv("YOUTUBE_API_KEY")
+    proxy = os.getenv("PROXY")
     if not api_key:
         print("Error: YOUTUBE_API_KEY not found")
         return None
@@ -80,11 +81,12 @@ def get_transcript(url, lang="en") -> str:
         channel = channel[:20]
 
         title = title + " - " + channel
+        proxies = {"https": proxy}
 
         # Get video transcript
         try:
             transcript_list = YouTubeTranscriptApi.get_transcript(
-                video_id=video_id)
+                video_id=video_id, proxies=proxies)
             # video_id, languages=[lang])
             transcript_text = " ".join([item["text"]
                                        for item in transcript_list])
