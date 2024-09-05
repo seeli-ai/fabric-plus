@@ -1,5 +1,6 @@
 import streamlit as st
 import repository as repo
+from repository import get_db_session
 
 
 @st.dialog("Confirm Delete")
@@ -65,7 +66,8 @@ def do_cancel():
 
 
 def do_new(repo_class):
-    st.session_state.id = repo_class.add_func(st.session_state.id).id
+    session = next(get_db_session())
+    st.session_state.id = repo_class.add_func(st.session_state.id, session=session).id
     st.rerun()
 
 
