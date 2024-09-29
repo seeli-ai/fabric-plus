@@ -3,6 +3,7 @@ from repository import get_all_models, get_user_by_id, get_last_input_by_user_id
 from helpers import find_index_of_model_by_short_name, find_index_of_prompt_by_title
 from ai import call_ai
 from st_copy_to_clipboard import st_copy_to_clipboard
+from repository import get_db_session
 
 from helpers import ensure_logged_in, get_title_and_text
 
@@ -97,8 +98,11 @@ with tab1:
             if col2.button("Create Input form Output"):
 
                 title, text = get_title_and_text(st.session_state.output)
+
+                session = next(get_db_session())
+
                 new_input = create_input(
-                    user_id=st.session_state.user.id, title=title, text=text)
+                    user_id=st.session_state.user.id, title=title, text=text, session=session)
 
                 st.session_state.input = new_input.text
                 st.session_state.input_title = new_input.title
