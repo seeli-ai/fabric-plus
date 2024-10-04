@@ -82,12 +82,12 @@ def get_transcript(url, lang="en") -> str:
 
         title = title + " - " + channel
         proxies = {"https": proxy}
-
+        
         # Get video transcript
         try:
             transcript_list = YouTubeTranscriptApi.get_transcript(
-                video_id=video_id, proxies=proxies)
-            # video_id, languages=[lang])
+                video_id=video_id, proxies=proxies, languages=[lang])
+          
             transcript_text = " ".join([item["text"]
                                        for item in transcript_list])
             transcript_text = transcript_text.replace("\n", " ")
