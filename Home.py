@@ -46,6 +46,7 @@ def main_app():
     if st.session_state.last_input is not None and "input" not in st.session_state:
         st.session_state.input = st.session_state.last_input.text
         st.session_state.input_title = st.session_state.last_input.title
+        st.session_state.input_title_save = st.session_state.last_input.title
         st.session_state.input_created_at = st.session_state.last_input.created_at
 
     if "language" not in st.session_state:
@@ -62,6 +63,9 @@ def main_app():
 
     if "input_title" not in st.session_state:
         st.session_state.input_title = ""
+    
+    if "input_title_save" not in st.session_state:
+        st.session_state.input_title_save = ""
 
     if "output" not in st.session_state:
         st.session_state.output = ""

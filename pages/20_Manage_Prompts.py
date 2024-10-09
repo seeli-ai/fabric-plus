@@ -4,7 +4,7 @@ import repository as repo
 import helper_dlgs as dlgs
 from models import Prompt
 from helpers import Language
-from ai import translate_prompt
+from ai_anthropic import translate_prompt
 from repository import create_prompt
 import crud_dialog
 
