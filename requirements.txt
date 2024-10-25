@@ -13,3 +13,4 @@ st-copy-to-clipboard
 PyMySQL
 nest_asyncio
 anthropic
+extra_streamlit_components
