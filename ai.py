@@ -10,6 +10,11 @@ def format_memory(memory: Dict[str, str]) -> str:
     return "\n\n".join([f"{key}:\n{value}" for key, value in memory.items()])
 
 def call_ai(model: Model, prompt: Prompt, input: str, temperature: float) -> str:
+    print("Calling AI")
+    print("Model: " + model.name)
+    print("Prompt: " + prompt.system_prompt[0:100])
+    print("Input: " + input[0:100])
+    print("Temperature: " + str(temperature))
     
     system_prompt = prompt.system_prompt
 
@@ -54,9 +59,11 @@ def call_ai(model: Model, prompt: Prompt, input: str, temperature: float) -> str
 def call_ai_with_prompt(model: Model, prompt: str, input: str, temperature: float) -> str:
     
     if model.provider.name == "OpenAI":
+        print("Calling OpenAI")
         return call_open_ai(model, prompt, input, temperature)
     
     if model.provider.name == "Anthropics":
+        print("Calling Anthropics")
         return call_anthropics(model, prompt, input, temperature)
     
     return "Provider not supported"
